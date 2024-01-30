@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 
 const Modules = [CommonModule, RouterOutlet];
-const Components = [HeaderComponent];
+const Components = [HeaderComponent, FooterComponent];
 
 @Component({
   selector: 'app-root',
