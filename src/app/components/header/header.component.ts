@@ -11,6 +11,6 @@ export class HeaderComponent {
   public logo: string = '/assets/images/logo.svg';
   public title: string = 'My library';
   public styles = {
-    container: 'flex flex-row items-center p-2 bg-sky-50',
+    container: 'flex flex-row items-center bg-sky-50 p-2',
   };
 }
