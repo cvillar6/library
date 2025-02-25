@@ -16,20 +16,13 @@ func main() {
 	fmt.Println("")
 
 	// Create a library
-	library := []book.Book{
-		{
-			ID:          1,
-			Title:       "The Alchemist",
-			Description: "A wonderful book",
-			Author:      "Paulo Coelho",
-			Review:      5,
-		},
-	}
+	library := []book.Book{}
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Println("Menu:")
 		fmt.Println("1. Create a new book")
+		fmt.Println("2. Read books")
 		fmt.Println("0. Exit")
 		fmt.Println("")
 		fmt.Print("Choose an option: ")
@@ -50,15 +43,29 @@ func main() {
 			return
 
 		case 1:
-			fmt.Println("Creating a new book...")
+			reader := bufio.NewReader(os.Stdin)
 
-			// Create a new book
+			fmt.Print("Enter book title: ")
+			bookTitle, _ := reader.ReadString('\n')
+
+			fmt.Print("Enter book description: ")
+			bookDescription, _ := reader.ReadString('\n')
+
+			fmt.Print("Enter book author: ")
+			bookAuthor, _ := reader.ReadString('\n')
+
+			fmt.Print("Enter book review: ")
+			review, _ := reader.ReadString('\n')
+			bookReview, _ := strconv.Atoi(review)
+
+			bookID := len(library) + 1
+
 			newBook := book.Book{
-				ID:          1,
-				Title:       "The Alchemist",
-				Description: "A wonderful book",
-				Author:      "Paulo Coelho",
-				Review:      5,
+				ID:          bookID,
+				Title:       bookTitle,
+				Description: bookDescription,
+				Author:      bookAuthor,
+				Review:      bookReview,
 			}
 
 			createdBook, err := book.CreateBook(&newBook, &library)
@@ -68,17 +75,16 @@ func main() {
 			} else {
 				library = append(library, createdBook)
 				fmt.Println("Book created successfully!")
-				fmt.Println("")
-				fmt.Println("Library:")
-				for _, book := range library {
-					fmt.Println(book)
-				}
 			}
+
+		case 2:
+			book.ReadBook(&library)
 
 		default:
 			fmt.Println("Invalid option. Please choose a valid option.")
-
 		}
+
+		fmt.Println("")
 	}
 
 }
