@@ -23,6 +23,7 @@ func main() {
 		fmt.Println("Menu:")
 		fmt.Println("1. Create a new book")
 		fmt.Println("2. Read books")
+		fmt.Println("3. Update book")
 		fmt.Println("0. Exit")
 		fmt.Println("")
 		fmt.Print("Choose an option: ")
@@ -56,15 +57,15 @@ func main() {
 
 			fmt.Print("Enter book review: ")
 			review, _ := reader.ReadString('\n')
-			bookReview, _ := strconv.Atoi(review)
+			bookReview, _ := strconv.Atoi(strings.TrimSpace(review))
 
 			bookID := len(library) + 1
 
 			newBook := book.Book{
 				ID:          bookID,
-				Title:       bookTitle,
-				Description: bookDescription,
-				Author:      bookAuthor,
+				Title:       strings.TrimSpace(bookTitle),
+				Description: strings.TrimSpace(bookDescription),
+				Author:      strings.TrimSpace(bookAuthor),
 				Review:      bookReview,
 			}
 
@@ -79,6 +80,55 @@ func main() {
 
 		case 2:
 			book.ReadBook(&library)
+
+		case 3:
+			reader := bufio.NewReader(os.Stdin)
+
+			fmt.Print("Enter the book ID that you want to edit: ")
+			ID, _ := reader.ReadString('\n')
+
+			bookID, _ := strconv.Atoi(strings.TrimSpace(ID))
+
+			selectedBook := book.GetBookByID(bookID, &library)
+
+			fmt.Printf("Previous title %s, enter the new title: ", selectedBook.Title)
+			newTitle, _ := reader.ReadString('\n')
+
+			fmt.Printf("Previous description %s, enter the new description: ", selectedBook.Description)
+			newDescription, _ := reader.ReadString('\n')
+
+			fmt.Printf("Previous author %s, enter the new author: ", selectedBook.Author)
+			newAuthor, _ := reader.ReadString('\n')
+
+			fmt.Printf("Previous review %d, enter the new review: ", selectedBook.Review)
+			review, _ := reader.ReadString('\n')
+			newReview, _ := strconv.Atoi(strings.TrimSpace(review))
+
+			if newTitle == "" {
+				newTitle = selectedBook.Title
+			}
+
+			if newDescription == "" {
+				newDescription = selectedBook.Description
+			}
+
+			if newAuthor == "" {
+				newAuthor = selectedBook.Author
+			}
+
+			if newReview == 0 {
+				newReview = selectedBook.Review
+			}
+
+			newBook := book.Book{
+				ID:          bookID,
+				Title:       strings.TrimSpace(newTitle),
+				Description: strings.TrimSpace(newDescription),
+				Author:      strings.TrimSpace(newAuthor),
+				Review:      newReview,
+			}
+
+			book.UpdateBook(&newBook, &library)
 
 		default:
 			fmt.Println("Invalid option. Please choose a valid option.")
