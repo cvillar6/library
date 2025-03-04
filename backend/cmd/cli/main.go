@@ -24,6 +24,7 @@ func main() {
 		fmt.Println("1. Create a new book")
 		fmt.Println("2. Read books")
 		fmt.Println("3. Update book")
+		fmt.Println("4. Delete book")
 		fmt.Println("0. Exit")
 		fmt.Println("")
 		fmt.Print("Choose an option: ")
@@ -129,6 +130,18 @@ func main() {
 			}
 
 			book.UpdateBook(&newBook, &library)
+
+		case 4:
+			reader := bufio.NewReader(os.Stdin)
+
+			fmt.Print("Enter the book ID that you want to delete: ")
+			ID, _ := reader.ReadString('\n')
+
+			bookID, _ := strconv.Atoi(strings.TrimSpace(ID))
+
+			selectedBook := book.GetBookByID(bookID, &library)
+
+			book.DeleteBook(selectedBook, &library)
 
 		default:
 			fmt.Println("Invalid option. Please choose a valid option.")
